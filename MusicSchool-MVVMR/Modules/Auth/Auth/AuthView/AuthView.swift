@@ -59,14 +59,14 @@ struct AuthView: View {
                                                             .multilineTextAlignment(.leading)
                                                             .fixedSize(horizontal: false, vertical: true)
                                                     }
-                                                    .frame(width: 250)
+                                                    .frame(width: 220)
                                                     .background(Color("SecondaryBackgroundColor"))
                                                     .cornerRadius(10)
                                                     .overlay(
                                                         RoundedRectangle(cornerRadius: 10)
                                                             .stroke(Color("BorderColor"), lineWidth: 1)
                                                     )
-                                                    .offset(x: -110, y: -70)
+                                                    .offset(x: -100, y: -70)
                                                     .transition(.opacity.combined(with: .move(edge: .top)))
                                                     .zIndex(1)
                                                     .onTapGesture {
