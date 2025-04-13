@@ -13,4 +13,8 @@ class GreetingsViewModel {
     init(router: AuthRouter? = nil) {
         self.router = router
     }
+    
+    func navigateToAuth() {
+        router?.showAuth()
+    }
 }

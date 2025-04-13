@@ -21,6 +21,12 @@ class AuthRouter: AppRouter {
         push(hostingController, animated: true)
     }
     
+    func showAuth() {
+        let viewModel = AuthViewModel(router: self)
+        let authView = AuthView(viewModel: viewModel)
+        let hostingController = UIHostingController(rootView: authView)
+        push(hostingController, animated: true)
+    }
 }
 
 
