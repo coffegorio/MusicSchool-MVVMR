@@ -107,12 +107,18 @@ struct AuthView: View {
                     .disabled(!viewModel.isLoginEnabled)
                     .opacity(viewModel.isLoginEnabled ? 1.0 : 0.6)
                     
-                    Spacer().frame(height: 10)
-                    
                     DefaultButton(
                         action: { viewModel.showTeacherAuth() },
                         isFill: false,
                         title: "Авторизация для преподавателя"
+                    )
+                    
+                    DefaultButton(
+                        action: {
+                            viewModel.goBack()
+                        },
+                        isFill: false,
+                        title: "Назад"
                     )
                 }
                 .padding(30)

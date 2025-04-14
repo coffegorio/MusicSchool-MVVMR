@@ -36,7 +36,12 @@ class AuthViewModel: ObservableObject {
     }
     
     func showTeacherAuth() {
-        // Здесь будет переход на экран авторизации для преподавателей
-        print("Переход на экран авторизации для преподавателей")
+        // Перенаправляем на экран авторизации для преподавателей в виде sheet
+        router?.showTeacherAuth()
     }
+    
+    func goBack() {
+        self.router?.goBack()
+    }
+    
 }
