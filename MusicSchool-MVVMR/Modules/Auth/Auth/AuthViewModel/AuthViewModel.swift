@@ -33,6 +33,9 @@ class AuthViewModel: ObservableObject {
     func authorize() {
         // Здесь будет логика авторизации
         print("Авторизация с логином: \(login) и паролем: \(password)")
+        
+        // Временно - сразу переходим на главные экраны без проверки
+        router?.showMainScreens()
     }
     
     func showTeacherAuth() {

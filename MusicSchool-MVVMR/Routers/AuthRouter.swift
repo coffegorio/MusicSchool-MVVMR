@@ -36,6 +36,12 @@ class AuthRouter: AppRouter {
         presentModal(hostingController, animated: true)
     }
     
+    func showMainScreens() {
+        // Создаем MainRouter и передаем ему текущий navigationController
+        let mainRouter = MainRouter(navigationController: self.navigationController)
+        mainRouter.start()
+    }
+    
     func goBack() {
         pop(animated: true)
     }
