@@ -19,7 +19,6 @@ struct GreetingsView: View {
             VStack {
                 Spacer()
                 
-                // Логотип по центру экрана
                 Image("LogoImage")
                     .resizable()
                     .aspectRatio(contentMode: .fit)

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		E84247762DAB42B200CB51B1 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = E84247752DAB42B200CB51B1 /* Lottie */; };
+		E8469DDA2DAF01E100B158FB /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E8469DD92DAF01E100B158FB /* FirebaseAuth */; };
+		E8469DDC2DAF01E100B158FB /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = E8469DDB2DAF01E100B158FB /* FirebaseCore */; };
+		E8469DDE2DAF01E100B158FB /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E8469DDD2DAF01E100B158FB /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +44,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E84247762DAB42B200CB51B1 /* Lottie in Frameworks */,
+				E8469DDE2DAF01E100B158FB /* FirebaseFirestore in Frameworks */,
+				E8469DDC2DAF01E100B158FB /* FirebaseCore in Frameworks */,
+				E8469DDA2DAF01E100B158FB /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +90,9 @@
 			name = "MusicSchool-MVVMR";
 			packageProductDependencies = (
 				E84247752DAB42B200CB51B1 /* Lottie */,
+				E8469DD92DAF01E100B158FB /* FirebaseAuth */,
+				E8469DDB2DAF01E100B158FB /* FirebaseCore */,
+				E8469DDD2DAF01E100B158FB /* FirebaseFirestore */,
 			);
 			productName = "MusicSchool-MVVMR";
 			productReference = E84247282DAB33AF00CB51B1 /* MusicSchool-MVVMR.app */;
@@ -115,6 +124,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				E84247742DAB42B200CB51B1 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				E8469DD82DAF01E100B158FB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E84247292DAB33AF00CB51B1 /* Products */;
@@ -167,7 +177,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.MusicSchool-MVVMR";
+				PRODUCT_BUNDLE_IDENTIFIER = com.NSHG;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -199,7 +209,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.MusicSchool-MVVMR";
+				PRODUCT_BUNDLE_IDENTIFIER = com.NSHG;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -362,6 +372,14 @@
 				minimumVersion = 4.5.1;
 			};
 		};
+		E8469DD82DAF01E100B158FB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.11.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -369,6 +387,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E84247742DAB42B200CB51B1 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		E8469DD92DAF01E100B158FB /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E8469DD82DAF01E100B158FB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		E8469DDB2DAF01E100B158FB /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E8469DD82DAF01E100B158FB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		E8469DDD2DAF01E100B158FB /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E8469DD82DAF01E100B158FB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

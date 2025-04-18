@@ -28,16 +28,7 @@ class AuthRouter: AppRouter {
         push(hostingController, animated: true)
     }
     
-    func showTeacherAuth() {
-        // Пример использования полноэкранного модального представления для экрана авторизации преподавателя
-        let viewModel = TeacherAuthViewModel(router: self)
-        let teacherAuthView = TeacherAuthView(viewModel: viewModel)
-        let hostingController = UIHostingController(rootView: teacherAuthView)
-        presentModal(hostingController, animated: true)
-    }
-    
     func showMainScreens() {
-        // Создаем MainRouter и передаем ему текущий navigationController
         let mainRouter = MainRouter(navigationController: self.navigationController)
         mainRouter.start()
     }

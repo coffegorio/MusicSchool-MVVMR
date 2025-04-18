@@ -22,12 +22,21 @@ class PreviewView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("PreviewView: viewDidLoad()")
+        
         self.view.backgroundColor = UIColor(named: "BackgroundColor")
         self.view.addSubview(lottieView)
         lottieView.play()
         
+        print("PreviewView: Анимация запущена, задержка перед checkAuthAndNavigate()")
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 2 ) {
-            self.viewModel?.navigateToGreetings()
+            print("PreviewView: Вызываем checkAuthAndNavigate()")
+            if self.viewModel == nil {
+                print("PreviewView: ОШИБКА - viewModel равен nil!")
+            }
+            self.viewModel?.checkAuthAndNavigate()
+            print("PreviewView: checkAuthAndNavigate() выполнен")
         }
     }
 }

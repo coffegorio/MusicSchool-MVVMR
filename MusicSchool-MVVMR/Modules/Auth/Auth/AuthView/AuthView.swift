@@ -84,12 +84,23 @@ struct AuthView: View {
                     }
                     .frame(height: 40)
                     
+                    if viewModel.showError {
+                        Text(viewModel.errorMessage)
+                            .font(.caption)
+                            .foregroundColor(Color("ErrorColor"))
+                            .padding(.bottom, 5)
+                            .transition(.opacity)
+                    }
+                    
                     VStack(spacing: 12) {
                         DefaultTextField(
                             text: $viewModel.login,
-                            placeholder: "Логин",
-                            leftIcon: Image(systemName: "person.fill")
+                            placeholder: "Email",
+                            leftIcon: Image(systemName: "envelope.fill")
                         )
+                        .autocapitalization(.none)
+                        .keyboardType(.emailAddress)
+                        .disableAutocorrection(true)
                         
                         DefaultTextField(
                             text: $viewModel.password,
@@ -97,21 +108,27 @@ struct AuthView: View {
                             isSecure: true,
                             leftIcon: Image(systemName: "lock.fill")
                         )
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
                     }
                     
-                    DefaultButton(
-                        action: { viewModel.authorize() },
-                        isFill: true,
-                        title: "Продолжить"
-                    )
-                    .disabled(!viewModel.isLoginEnabled)
-                    .opacity(viewModel.isLoginEnabled ? 1.0 : 0.6)
-                    
-                    DefaultButton(
-                        action: { viewModel.showTeacherAuth() },
-                        isFill: false,
-                        title: "Авторизация для преподавателя"
-                    )
+                    if viewModel.isLoading {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle())
+                                .padding()
+                            Spacer()
+                        }
+                    } else {
+                        DefaultButton(
+                            action: { viewModel.authorize() },
+                            isFill: true,
+                            title: "Продолжить"
+                        )
+                        .disabled(!viewModel.isLoginEnabled)
+                        .opacity(viewModel.isLoginEnabled ? 1.0 : 0.6)
+                    }
                     
                     DefaultButton(
                         action: {
@@ -123,6 +140,13 @@ struct AuthView: View {
                 }
                 .padding(30)
             }
+        }
+        .animation(.default, value: viewModel.showError)
+        .animation(.default, value: viewModel.isLoading)
+        .onAppear {
+            #if DEBUG
+            print("Экран авторизации загружен")
+            #endif
         }
     }
 }

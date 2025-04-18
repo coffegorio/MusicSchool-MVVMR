@@ -11,13 +11,29 @@ import SwiftUI
 class PreviewRouter: AppRouter {
     
     func start() {
+        print("PreviewRouter: Вызван метод start()")
         showPreview()
+        print("PreviewRouter: Метод showPreview() выполнен")
     }
     
     func showPreview() {
+        print("PreviewRouter: Вызван метод showPreview()")
+        if navigationController == nil {
+            print("PreviewRouter: ОШИБКА - navigationController равен nil!")
+            return
+        }
+        
+        if let topController = navigationController?.viewControllers.first, topController is PreviewView {
+            print("PreviewRouter: PreviewView уже установлен как верхний контроллер, пропускаем")
+            return
+        }
+        
         let previewView = PreviewView()
         let previewViewModel = PreviewViewModel(router: self)
         previewView.viewModel = previewViewModel
-        navigationController?.pushViewController(previewView, animated: true)
+        print("PreviewRouter: PreviewView и ViewModel созданы")
+        
+        navigationController?.setViewControllers([previewView], animated: true)
+        print("PreviewRouter: Установлен новый стек контроллеров")
     }
 }

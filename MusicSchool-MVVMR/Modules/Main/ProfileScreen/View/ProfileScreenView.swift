@@ -6,69 +6,101 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ProfileScreenView: View {
     
-    var viewModel: ProfileScreenViewModel
+    @ObservedObject var viewModel: ProfileScreenViewModel
+    @State private var showLogoutAlert = false
     
     var body: some View {
         ZStack {
             Color("BackgroundColor")
                 .ignoresSafeArea()
             
-            VStack {
-                // Шапка профиля
-                VStack(spacing: 20) {
-                    // Аватар
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 120, height: 120)
-                        .foregroundColor(Color("AccentColor"))
-                        .padding(.top, 30)
-                    
-                    // Имя пользователя
-                    Text("Иван Иванов")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color("TextColor"))
-                    
-                    // Статус
-                    Text("Ученик • Фортепиано")
-                        .font(.subheadline)
-                        .foregroundColor(Color("TextColor").opacity(0.7))
-                    
-                    Divider()
-                        .padding(.vertical)
-                }
-                
-                // Информация о профиле
-                VStack(spacing: 15) {
-                    profileInfoRow(icon: "envelope.fill", title: "Email", value: "ivan@example.com")
-                    profileInfoRow(icon: "phone.fill", title: "Телефон", value: "+7 (999) 123-45-67")
-                    profileInfoRow(icon: "calendar", title: "Дата рождения", value: "01.01.2010")
-                    profileInfoRow(icon: "music.note", title: "Инструмент", value: "Фортепиано")
-                    profileInfoRow(icon: "person.fill", title: "Преподаватель", value: "Петров П.П.")
-                }
-                .padding()
-                
-                Spacer()
-                
-                // Кнопка выхода
-                Button(action: {
-                    // Выход из профиля
-                }) {
-                    Text("Выйти из аккаунта")
-                        .foregroundColor(.red)
+            if viewModel.isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .scaleEffect(1.5)
+            } else {
+                ScrollView {
+                    VStack {
+                        // Шапка профиля
+                        VStack(spacing: 20) {
+                            // Аватар
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 120, height: 120)
+                                .foregroundColor(Color("AccentColor"))
+                                .padding(.top, 30)
+                            
+                            // Имя пользователя
+                            Text(viewModel.fullName)
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .foregroundColor(Color("TextColor"))
+                                .multilineTextAlignment(.center)
+                            
+                            // Статус
+                            Text(viewModel.statusString)
+                                .font(.subheadline)
+                                .foregroundColor(Color("TextColor").opacity(0.7))
+                            
+                            Divider()
+                                .padding(.vertical)
+                        }
+                        
+                        // Информация о профиле
+                        VStack(spacing: 15) {
+                            if !viewModel.userEmail.isEmpty {
+                                profileInfoRow(icon: "envelope.fill", title: "Email", value: viewModel.userEmail)
+                            }
+                            
+                            if !viewModel.userInstrument.isEmpty {
+                                profileInfoRow(icon: "music.note", title: "Инструмент", value: viewModel.userInstrument)
+                            }
+                        }
                         .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color("SecondaryBackgroundColor"))
-                        .cornerRadius(10)
+                        
+                        Spacer()
+                        
+                        // Кнопка выхода
+                        Button(action: {
+                            showLogoutAlert = true
+                        }) {
+                            HStack {
+                                Image(systemName: "rectangle.portrait.and.arrow.right")
+                                    .foregroundColor(.red)
+                                
+                                Text("Выйти из аккаунта")
+                                    .foregroundColor(.red)
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color("SecondaryBackgroundColor"))
+                            .cornerRadius(10)
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom, 20)
+                        .alert(isPresented: $showLogoutAlert) {
+                            Alert(
+                                title: Text("Выход из аккаунта"),
+                                message: Text("Вы уверены, что хотите выйти из аккаунта?"),
+                                primaryButton: .destructive(Text("Выйти")) {
+                                    resetAppToPreview()
+                                },
+                                secondaryButton: .cancel(Text("Отмена"))
+                            )
+                        }
+                    }
+                    .padding()
                 }
-                .padding(.horizontal)
-                .padding(.bottom, 20)
             }
-            .padding()
+        }
+        .onAppear {
+            // При появлении экрана загружаем данные пользователя
+            viewModel.loadUserData()
         }
     }
     
@@ -90,6 +122,49 @@ struct ProfileScreenView: View {
             Spacer()
         }
         .padding(.vertical, 8)
+    }
+    
+    // Метод для сброса приложения к экрану Preview
+    private func resetAppToPreview() {
+        // Выход из Firebase Auth
+        do {
+            try FirebaseAuth.Auth.auth().signOut()
+            print("ProfileScreenView: Успешный выход из Firebase")
+        } catch let error {
+            print("ProfileScreenView: Ошибка при выходе из Firebase: \(error.localizedDescription)")
+        }
+        
+        // Получаем ссылку на SceneDelegate через окно
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let sceneDelegate = windowScene.delegate as? SceneDelegate,
+              let window = sceneDelegate.window else {
+            print("ProfileScreenView: Не удалось получить окно для перезапуска приложения")
+            return
+        }
+        
+        // Создаем новый стек навигации
+        let navigationController = UINavigationController()
+        navigationController.isNavigationBarHidden = true
+        
+        // Создаем PreviewRouter и его компоненты
+        let previewRouter = PreviewRouter(navigationController: navigationController)
+        
+        // Инициализируем PreviewView и ViewModel
+        let previewView = PreviewView()
+        let previewViewModel = PreviewViewModel(router: previewRouter) 
+        previewView.viewModel = previewViewModel
+        
+        // Устанавливаем PreviewView как единственный контроллер в стеке навигации
+        navigationController.setViewControllers([previewView], animated: false)
+        
+        // Затем устанавливаем новый корневой контроллер
+        window.rootViewController = navigationController
+        
+        // Обновляем окно
+        window.makeKeyAndVisible()
+        
+        // НЕ вызываем previewRouter.start(), так как это
+        // вызовет showPreview() повторно и приведет к дублированию
     }
 }
 
